@@ -20,8 +20,8 @@ async function getJSON(res, url, numPage, video, maxResult) {
         const movies = Array.from(window.document.querySelectorAll('.movies-list .ml-item')).slice(0, maxResult)
         await Promise.all(movies.map(async movie => {
             const officialWeb = movie.querySelector('.ml-mask').getAttribute('href')
-            const quality = movie.querySelector('.mli-quality')?.textContent
-            const episode = movie.querySelector('.mli-eps')?.textContent
+            const quality = movie.querySelector('.mli-quality').textContent
+            const episode = (movie.querySelector('.mli-eps')) ? movie.querySelector('.mli-eps').textContent : null
             const rating = movie.querySelector('.mli-rating').textContent
             const thumbnail = movie.querySelector('img').getAttribute('data-original')
             const title = movie.querySelector('.mli-info h2').textContent
@@ -68,31 +68,31 @@ async function detailMovie(officialWeb) {
     const html = await axios(officialWeb)
     const { window } = new JSDOM(html.data)
 
-    const views = window.document.querySelector('.mvic-desc .mvic-info .mvici-left')?.children.item(0)?.textContent.split(" ")?.slice(1).join(" ")
-    const genre = window.document.querySelector('.mvic-desc .mvic-info .mvici-left')?.children.item(1)?.textContent.split(" ")?.slice(1).join(" ")
-    const director = window.document.querySelector('.mvic-desc .mvic-info .mvici-left')?.children.item(2)?.querySelector('span')?.textContent
-    const actors = window.document.querySelector('.mvic-desc .mvic-info .mvici-left')?.children.item(3)?.querySelector('span')?.textContent
-    const country = window.document.querySelector('.mvic-desc .mvic-info .mvici-left')?.children.item(4)?.children.item(1)?.textContent
+    const views = window.document.querySelector('.mvic-desc .mvic-info .mvici-left').children.item(0).textContent.split(" ").slice(1).join(" ")
+    const genre = window.document.querySelector('.mvic-desc .mvic-info .mvici-left').children.item(1).textContent.split(" ").slice(1).join(" ")
+    const director = window.document.querySelector('.mvic-desc .mvic-info .mvici-left').children.item(2).querySelector('span').textContent
+    const actors = window.document.querySelector('.mvic-desc .mvic-info .mvici-left').children.item(3).querySelector('span').textContent
+    const country = window.document.querySelector('.mvic-desc .mvic-info .mvici-left').children.item(4).children.item(1).textContent
 
-    const duration = window.document.querySelector(".mvic-desc .mvic-info .mvici-right span[itemprop='duration']")?.textContent
-    const release = window.document.querySelector('.mvic-desc .mvic-info .mvici-right')?.children.item(2)?.textContent.split(" ")?.slice(1).join(" ")
-    const description = window.document.querySelector('.mvic-desc .desc')?.textContent
-    const thumbnailLandscape = window.document.querySelector('#mv-info a')?.getAttribute('style')?.split(" ")?.slice(1).join("").split("url").slice(1).join("").split("(").slice(1).join("").split(")").join("")
-    const trailer = window.document.querySelector('.mvic-desc')?.children.item(1)?.children.item(0)?.getAttribute('href')
-    const eps = window.document.querySelectorAll('.episodios a')?.length
+    const duration = window.document.querySelector(".mvic-desc .mvic-info .mvici-right span[itemprop='duration']").textContent
+    const release = window.document.querySelector('.mvic-desc .mvic-info .mvici-right').children.item(2).textContent.split(" ").slice(1).join(" ")
+    const description = window.document.querySelector('.mvic-desc .desc').textContent
+    const thumbnailLandscape = window.document.querySelector('#mv-info a').getAttribute('style').split(" ").slice(1).join("").split("url").slice(1).join("").split("(").slice(1).join("").split(")").join("")
+    const trailer = window.document.querySelector('.mvic-desc').children.item(1).children.item(0).getAttribute('href')
+    const eps = window.document.querySelectorAll('.episodios a').length
 
     return {
-        trailer: trailer ?? null,
-        views: views ?? null,
-        genre: genre ?? null,
-        director: director ?? null,
-        actors: actors ?? null,
-        country: country ?? null,
-        duration: duration ?? null,
-        release: release ?? null,
-        thumbnailLandscape: thumbnailLandscape ?? null,
-        description: description ?? null,
-        totalEpisodes: eps ?? null
+        trailer: trailer ? trailer : null,
+        views: views ? views : null,
+        genre: genre ? genre : null,
+        director: director ? director : null,
+        actors: actors ? actors : null,
+        country: country ? country : null,
+        duration: duration ? duration : null,
+        release: release ? release : null,
+        thumbnailLandscape: thumbnailLandscape ? thumbnailLandscape : null,
+        description: description ? description : null,
+        totalEpisodes: eps ? eps : null
     }
 }
 
@@ -114,7 +114,7 @@ async function videoURL(officialWeb) {
     let playVideo = `${officialWeb}/play`
     let response = await axios(playVideo)
     let { window } = new JSDOM(response.data)
-    let iframe = window.document.querySelector('.iframe #myFrame')?.getAttribute('src')
+    let iframe = window.document.querySelector('.iframe #myFrame').getAttribute('src')
 
     if (iframe === undefined || iframe === null) {
         const urlTemp = new URL(officialWeb).toString().split('/tvshows').join("")

@@ -20,11 +20,11 @@ app.get('/', function (req, res) {
 })
 
 function checkNumPage(req) {
-    return req.query.page ?? "1"
+    return req.query.hasOwnProperty('page') ? req.query.page : "1"
 }
 
 function checkVideo(req) {
-    return req.query.video ?? false
+    return req.query.hasOwnProperty('video') ? req.query.video : false
 }
 
 function checkSearch(req) {
@@ -32,7 +32,7 @@ function checkSearch(req) {
 }
 
 function maxResult(req) {
-    return req.query.maxResult ?? 21
+    return req.query.hasOwnProperty('maxResult') ? req.query.maxResult : 21
 }
 
 async function scrapHomePage() {

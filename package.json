@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon server"
+      "start": "node index.js"
   },
   "author": "Nazir Bahrul Ulum",
   "license": "ISC",

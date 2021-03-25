@@ -12,6 +12,7 @@ const axios = require('axios')
 const domain = 'http://103.194.171.18'
 
 app.use(cors({ origin: '*' }))
+app.use(express.static('public'))
 
 app.get('/', function (req, res) {
     res.json({
